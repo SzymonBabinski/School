@@ -1,10 +1,13 @@
 package com.school.entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
 public class Class {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String className;
+    @OneToOne
     private Teacher classTeacher;
 
     public Class() {

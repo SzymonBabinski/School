@@ -1,13 +1,15 @@
 package com.school.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Lesson {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @OneToOne
     private Class relatedClass;
+    @OneToOne
     private Teacher teacher;
     private String subject;
     private String day;

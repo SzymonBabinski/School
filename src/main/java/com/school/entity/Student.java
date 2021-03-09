@@ -1,15 +1,16 @@
 package com.school.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Student {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String firsName;
     private String lastName;
-    //private Class relatedClass;
+    @ManyToOne
+    private Class relatedClass;
 
     public Student() {
     }
@@ -37,4 +38,13 @@ public class Student {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public Class getRelatedClass() {
+        return relatedClass;
+    }
+
+    public void setRelatedClass(Class relatedClass) {
+        this.relatedClass = relatedClass;
+    }
+
 }
