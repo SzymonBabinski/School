@@ -8,8 +8,6 @@ import java.util.Optional;
 interface StudentServiceInterface {
   Student saveStudent(Student student);
 
-  boolean findIfStudentExistById(Integer id);
-
   List<Student> findAllStudents();
 
   Optional<Student> findStudentById(Integer id);

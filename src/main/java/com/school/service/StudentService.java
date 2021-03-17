@@ -20,10 +20,6 @@ public class StudentService implements StudentServiceInterface {
     return studentRepository.save(student);
   }
 
-  public boolean findIfStudentExistById(Integer id) {
-    return studentRepository.findById(id).isPresent();
-  }
-
   public List<Student> findAllStudents() {
     return studentRepository.findAll();
   }
