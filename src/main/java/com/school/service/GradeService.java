@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GradeService {
+public class GradeService implements GradeServiceInterface {
     private GradeRepository gradeRepository;
     private GradeMapper gradeMapper;
 

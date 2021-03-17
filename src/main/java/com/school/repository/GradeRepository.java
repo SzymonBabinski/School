@@ -15,18 +15,18 @@ import java.util.List;
 public interface GradeRepository extends JpaRepository<Grade, Integer> {
 
     @Query(value = "SELECT id,value,subject FROM grades WHERE id =:gradeId AND student_id =:studentId", nativeQuery = true)
-    public Grade showInfoAboutStudentGrade(@Param("studentId") int studentId, @Param("gradeId") int gradeId);
+    Grade showInfoAboutStudentGrade(@Param("studentId") int studentId, @Param("gradeId") int gradeId);
 
     @Query(value = "SELECT * FROM grades WHERE student_id =:studentId", nativeQuery = true)
-    public List<Grade> getStudentGradesList(@Param("studentId") int studentId);
+    List<Grade> getStudentGradesList(@Param("studentId") int studentId);
 
     @Modifying
     @Transactional
     @Query(value = "update GRADES set VALUE =:gradeValue, SUBJECT =:subject, STUDENT_ID=:studentId WHERE ID =:gradeId", nativeQuery = true)
-    public void updateGrade(@Param("gradeId") int id, @Param("gradeValue") int value, @Param("subject") String subject, @Param("studentId") int studentId);
+    void updateGrade(@Param("gradeId") int id, @Param("gradeValue") int value, @Param("subject") String subject, @Param("studentId") int studentId);
 
     @Modifying
     @Transactional
     @Query(value = "delete from GRADES where ID =:gradeId AND STUDENT_ID =:studentId", nativeQuery = true)
-    public void deleteGrade(@Param("studentId") int studentId, @Param("gradeId") int id);
+    void deleteGrade(@Param("studentId") int studentId, @Param("gradeId") int id);
 }

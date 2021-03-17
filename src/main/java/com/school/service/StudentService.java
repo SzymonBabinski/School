@@ -2,14 +2,13 @@ package com.school.service;
 
 import com.school.model.Student;
 import com.school.repository.StudentRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentService {
+public class StudentService implements StudentServiceInterface {
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -42,15 +41,15 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-    public void partialUpdateStudentWithId(@Param("id") int id, Student student) {
-        Student current_student = findStudentById(id).get();
+    public void partialUpdateStudentWithId(int id, Student student) {
+        Student currentStudent = findStudentById(id).get();
         if (student.getFirstName() != null) {
-            current_student.setFirstName(student.getFirstName());
+            currentStudent.setFirstName(student.getFirstName());
         }
         if (student.getLastName() != null) {
-            current_student.setLastName(student.getLastName());
+            currentStudent.setLastName(student.getLastName());
         }
-        studentRepository.save(current_student);
+        studentRepository.save(currentStudent);
     }
 
 }

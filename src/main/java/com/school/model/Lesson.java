@@ -1,15 +1,18 @@
-package com.school.entity;
+package com.school.model;
 
 import javax.persistence.*;
 
 @Entity
+@Table(name = "lessons")
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @OneToOne
+    @JoinColumn(name = "class_name")
     private Class relatedClass;
     @OneToOne
+    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
     private String subject;
     private String day;

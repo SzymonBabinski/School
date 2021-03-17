@@ -2,14 +2,13 @@ package com.school.service;
 
 import com.school.model.Teacher;
 import com.school.repository.TeacherRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TeacherService {
+public class TeacherService implements TeacherServiceInterface {
     private TeacherRepository teacherRepository;
 
     public TeacherService(TeacherRepository teacherRepository) {
@@ -41,7 +40,7 @@ public class TeacherService {
         teacherRepository.deleteById(id);
     }
 
-    public void partialUpdateTeachWithId(@Param("id") int id, Teacher teacher) {
+    public void partialUpdateTeachWithId(int id, Teacher teacher) {
         Teacher currentTeacher = findTeacherById(id).get();
         if (teacher.getFirstName() != null) {
             currentTeacher.setFirstName(teacher.getFirstName());

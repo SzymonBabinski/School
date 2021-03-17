@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS class, grade, lesson, student, teacher;
+DROP TABLE IF EXISTS classes, grades, lessons, students, teachers;
 CREATE TABLE teachers
 (
     id         INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
