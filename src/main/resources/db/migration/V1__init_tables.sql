@@ -1,41 +1,45 @@
 DROP TABLE IF EXISTS class, grade, lesson, student, teacher;
-CREATE TABLE teacher
+CREATE TABLE teachers
 (
-    id        INT NOT NULL PRIMARY KEY,
-    firstName VARCHAR(50),
-    lastName  VARCHAR(50)
+    id         INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50),
+    last_name  VARCHAR(50)
 );
 
-CREATE TABLE class
+CREATE TABLE classes
 (
-    className VARCHAR(50) PRIMARY KEY,
-    FOREIGN KEY (className) REFERENCES teacher (id)
+    class_name VARCHAR(50) PRIMARY KEY,
+    teacher_id INT NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES teachers (id)
 );
 
-CREATE TABLE student
+CREATE TABLE students
 (
-    id        INT NOT NULL PRIMARY KEY,
-    firstName VARCHAR(50),
-    lastName  VARCHAR(50),
-    FOREIGN KEY (id) REFERENCES class (className)
+    id                 INT         NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    first_name         VARCHAR(50),
+    last_name          VARCHAR(50),
+    student_class_name VARCHAR(50) NULL,
+    FOREIGN KEY (student_class_name) REFERENCES classes (class_name)
 );
 
-CREATE TABLE grade
+CREATE TABLE grades
 (
-    id      INT NOT NULL PRIMARY KEY,
-    value   INT NOT NULL,
-    subject VARCHAR(30),
-    FOREIGN KEY (id) REFERENCES student (id),
-    FOREIGN KEY (id) REFERENCES teacher (id)
+    id         INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    value      INT NOT NULL,
+    subject    VARCHAR(30),
+    student_id INT NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES students (id)
 );
 
-CREATE TABLE lesson
+CREATE TABLE lessons
 (
-    id      INT NOT NULL PRIMARY KEY,
-    subject VARCHAR(30),
-    day     VARCHAR(50),
-    FOREIGN KEY (id) REFERENCES class (className),
-    FOREIGN KEY (id) REFERENCES teacher (id)
+    id         INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    subject    VARCHAR(30),
+    day        VARCHAR(50),
+    class_name VARCHAR(50),
+    FOREIGN KEY (class_name) REFERENCES classes (class_name),
+    teacher_id INT NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES teachers (id)
 );
 
 
