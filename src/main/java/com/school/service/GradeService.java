@@ -1,7 +1,6 @@
 package com.school.service;
 
 import com.school.dto.GradeDto;
-import com.school.mapper.GradeMapper;
 import com.school.model.Grade;
 import com.school.repository.GradeRepository;
 import org.springframework.stereotype.Service;
@@ -12,15 +11,9 @@ import java.util.Optional;
 @Service
 public class GradeService implements GradeServiceInterface {
     private GradeRepository gradeRepository;
-    private GradeMapper gradeMapper;
 
     public GradeService(GradeRepository gradeRepository) {
         this.gradeRepository = gradeRepository;
-    }
-
-
-    public boolean findIfGradeExistById(int id) {
-        return gradeRepository.findById(id).isPresent();
     }
 
     public Optional<Grade> findGrade(int id) {
@@ -35,9 +28,9 @@ public class GradeService implements GradeServiceInterface {
         return gradeRepository.getStudentGradesList(studentId);
     }
 
-    public Grade updateStudentGrade(int studentId, int gradeId, GradeDto gradeDto) {
+    // Nie wiem czy wgl mozna z native query zwracac cos innego niz void
+    public void updateStudentGrade(int studentId, int gradeId, GradeDto gradeDto) {
         gradeRepository.updateGrade(gradeId, gradeDto.getValue(), gradeDto.getSubject(), studentId);
-        return gradeMapper.mapToGrade(gradeDto, studentId);
     }
 
     public void deleteStudentGrade(int studentId, int gradeId) {

@@ -16,8 +16,8 @@ public class StudentService implements StudentServiceInterface {
 
     private StudentRepository studentRepository;
 
-    public void saveStudent(Student student) {
-        studentRepository.save(student);
+    public Student saveStudent(Student student) {
+        return studentRepository.save(student);
     }
 
     public boolean findIfStudentExistById(Integer id) {
@@ -32,24 +32,27 @@ public class StudentService implements StudentServiceInterface {
         return studentRepository.findById(id);
     }
 
-    public void updateStudentWithId(Student student, int id) {
+    public Student updateStudentWithId(Student student, int id) {
         student.setId(id);
-        studentRepository.save(student);
+        return studentRepository.save(student);
     }
 
     public void deleteStudentWithId(int id) {
         studentRepository.deleteById(id);
     }
 
-    public void partialUpdateStudentWithId(int id, Student student) {
-        Student currentStudent = findStudentById(id).get();
-        if (student.getFirstName() != null) {
-            currentStudent.setFirstName(student.getFirstName());
-        }
-        if (student.getLastName() != null) {
-            currentStudent.setLastName(student.getLastName());
-        }
-        studentRepository.save(currentStudent);
+    public Student partialUpdateStudentWithId(int id, Student student) {
+
+        return findStudentById(id).map(currentStudent -> {
+            if (student.getFirstName() != null) {
+                currentStudent.setFirstName(student.getFirstName());
+            }
+            if (student.getLastName() != null) {
+                currentStudent.setLastName(student.getLastName());
+            }
+            studentRepository.save(currentStudent);
+            return currentStudent;
+        }).orElseThrow(() -> new NullPointerException("Student not found"));
     }
 
 }

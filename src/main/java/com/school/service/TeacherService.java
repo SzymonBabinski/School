@@ -19,10 +19,6 @@ public class TeacherService implements TeacherServiceInterface {
         teacherRepository.save(teacher);
     }
 
-    public boolean findIfTeacherExistById(Integer id) {
-        return teacherRepository.findById(id).isPresent();
-    }
-
     public List<Teacher> findAllTeachers() {
         return teacherRepository.findAll();
     }
@@ -31,24 +27,25 @@ public class TeacherService implements TeacherServiceInterface {
         return teacherRepository.findById(id);
     }
 
-    public void updateTeacherWithId(Teacher teacher, int id) {
+    public Teacher updateTeacherWithId(Teacher teacher, int id) {
         teacher.setId(id);
-        teacherRepository.save(teacher);
+        return teacherRepository.save(teacher);
     }
 
     public void deleteTeacherWithId(int id) {
         teacherRepository.deleteById(id);
     }
 
-    public void partialUpdateTeachWithId(int id, Teacher teacher) {
-        Teacher currentTeacher = findTeacherById(id).get();
-        if (teacher.getFirstName() != null) {
-            currentTeacher.setFirstName(teacher.getFirstName());
-        }
-        if (teacher.getLastName() != null) {
-            currentTeacher.setLastName(teacher.getLastName());
-        }
-        teacherRepository.save(teacher);
-    }
+    public Teacher partialUpdateTeacherWithId(int id, Teacher teacher) {
 
+        return findTeacherById(id).map(teacher1 -> {
+            if (teacher.getFirstName() != null) {
+                teacher1.setFirstName(teacher.getFirstName());
+            }
+            if (teacher.getLastName() != null) {
+                teacher1.setLastName(teacher.getLastName());
+            }
+            return teacherRepository.save(teacher1);
+        }).orElseThrow(() -> new NullPointerException("Teacher not found"));
+    }
 }

@@ -9,15 +9,13 @@ interface TeacherServiceInterface {
 
     void saveTeacher(Teacher teacher);
 
-    boolean findIfTeacherExistById(Integer id);
-
     List<Teacher> findAllTeachers();
 
     Optional<Teacher> findTeacherById(Integer id);
 
-    void updateTeacherWithId(Teacher teacher, int id);
+    Teacher updateTeacherWithId(Teacher teacher, int id);
 
     void deleteTeacherWithId(int id);
 
-    void partialUpdateTeachWithId(int id, Teacher teacher);
+    Teacher partialUpdateTeacherWithId(int id, Teacher teacher);
 }

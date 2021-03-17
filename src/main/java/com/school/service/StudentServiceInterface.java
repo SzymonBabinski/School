@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 interface StudentServiceInterface {
-    void saveStudent(Student student);
+    Student saveStudent(Student student);
 
     boolean findIfStudentExistById(Integer id);
 
@@ -14,9 +14,9 @@ interface StudentServiceInterface {
 
     Optional<Student> findStudentById(Integer id);
 
-    void updateStudentWithId(Student student, int id);
+    Student updateStudentWithId(Student student, int id);
 
     void deleteStudentWithId(int id);
 
-    void partialUpdateStudentWithId(int id, Student student);
+    Student partialUpdateStudentWithId(int id, Student student);
 }
