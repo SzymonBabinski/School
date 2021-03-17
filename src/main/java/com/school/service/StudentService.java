@@ -10,49 +10,51 @@ import java.util.Optional;
 @Service
 public class StudentService implements StudentServiceInterface {
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+  public StudentService(StudentRepository studentRepository) {
+    this.studentRepository = studentRepository;
+  }
 
-    private StudentRepository studentRepository;
+  private StudentRepository studentRepository;
 
-    public Student saveStudent(Student student) {
-        return studentRepository.save(student);
-    }
+  public Student saveStudent(Student student) {
+    return studentRepository.save(student);
+  }
 
-    public boolean findIfStudentExistById(Integer id) {
-        return studentRepository.findById(id).isPresent();
-    }
+  public boolean findIfStudentExistById(Integer id) {
+    return studentRepository.findById(id).isPresent();
+  }
 
-    public List<Student> findAllStudents() {
-        return studentRepository.findAll();
-    }
+  public List<Student> findAllStudents() {
+    return studentRepository.findAll();
+  }
 
-    public Optional<Student> findStudentById(Integer id) {
-        return studentRepository.findById(id);
-    }
+  public Optional<Student> findStudentById(Integer id) {
+    return studentRepository.findById(id);
+  }
 
-    public Student updateStudentWithId(Student student, int id) {
-        student.setId(id);
-        return studentRepository.save(student);
-    }
+  public Student updateStudentWithId(Student student, int id) {
+    student.setId(id);
+    return studentRepository.save(student);
+  }
 
-    public void deleteStudentWithId(int id) {
-        studentRepository.deleteById(id);
-    }
+  public void deleteStudentWithId(int id) {
+    studentRepository.deleteById(id);
+  }
 
-    public Student partialUpdateStudentWithId(int id, Student student) {
+  public Student partialUpdateStudentWithId(int id, Student student) {
 
-        return findStudentById(id).map(currentStudent -> {
-            if (student.getFirstName() != null) {
+    return findStudentById(id)
+        .map(
+            currentStudent -> {
+              if (student.getFirstName() != null) {
                 currentStudent.setFirstName(student.getFirstName());
-            }
-            if (student.getLastName() != null) {
+              }
+              if (student.getLastName() != null) {
                 currentStudent.setLastName(student.getLastName());
-            }
-            studentRepository.save(currentStudent);
-            return currentStudent;
-        }).orElseThrow(() -> new NullPointerException("Student not found"));
-    }
-
+              }
+              studentRepository.save(currentStudent);
+              return currentStudent;
+            })
+        .orElseThrow(() -> new NullPointerException("Student not found"));
+  }
 }

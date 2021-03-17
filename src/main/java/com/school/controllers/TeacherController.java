@@ -22,40 +22,72 @@ public class TeacherController {
 
   @PostMapping("/teachers")
   public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherDto toCreate) {
-    return teacherService.findTeacherById(toCreate.getId()).map(teacher -> ResponseEntity.badRequest().body(teacherMapper.mapToTeacherDto(teacher))).orElseGet(() -> {
-      teacherService.saveTeacher(teacherMapper.mapToTeacher(toCreate));
-      return ResponseEntity.created(URI.create("/" + toCreate.getId())).body(toCreate);
-    });
+    return teacherService
+        .findTeacherById(toCreate.getId())
+        .map(teacher -> ResponseEntity.badRequest().body(teacherMapper.mapToTeacherDto(teacher)))
+        .orElseGet(
+            () -> {
+              teacherService.saveTeacher(teacherMapper.mapToTeacher(toCreate));
+              return ResponseEntity.created(URI.create("/" + toCreate.getId())).body(toCreate);
+            });
   }
 
   @GetMapping("/teachers")
   public ResponseEntity<List<TeacherDto>> getTeachers() {
-    return ResponseEntity.ok().body(teacherMapper.mapToTeacherListDto(teacherService.findAllTeachers()));
+    return ResponseEntity.ok()
+        .body(teacherMapper.mapToTeacherListDto(teacherService.findAllTeachers()));
   }
 
   @GetMapping("/teachers/{id}")
   public ResponseEntity<TeacherDto> teacherInfo(@PathVariable int id) {
 
-    return teacherService.findTeacherById(id).map(teacher -> ResponseEntity.ok().body(teacherMapper.mapToTeacherDto(teacher))).orElseGet(() -> ResponseEntity.notFound().build());
+    return teacherService
+        .findTeacherById(id)
+        .map(teacher -> ResponseEntity.ok().body(teacherMapper.mapToTeacherDto(teacher)))
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @PutMapping("/teachers/{id}")
-  public ResponseEntity<TeacherDto> updateTeacher(@RequestBody TeacherDto toUpdate, @PathVariable int id) {
+  public ResponseEntity<TeacherDto> updateTeacher(
+      @RequestBody TeacherDto toUpdate, @PathVariable int id) {
 
-    return teacherService.findTeacherById(id).map(teacher -> ResponseEntity.ok().body(teacherMapper.mapToTeacherDto(teacherService.updateTeacherWithId(teacherMapper.mapToTeacher(toUpdate), id)))).orElseGet(() -> ResponseEntity.notFound().build());
+    return teacherService
+        .findTeacherById(id)
+        .map(
+            teacher ->
+                ResponseEntity.ok()
+                    .body(
+                        teacherMapper.mapToTeacherDto(
+                            teacherService.updateTeacherWithId(
+                                teacherMapper.mapToTeacher(toUpdate), id))))
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @PatchMapping("/teachers/{id}")
-  public ResponseEntity<TeacherDto> partialUpdateTeacher(@RequestBody TeacherDto toUpdate, @PathVariable int id) {
+  public ResponseEntity<TeacherDto> partialUpdateTeacher(
+      @RequestBody TeacherDto toUpdate, @PathVariable int id) {
 
-    return teacherService.findTeacherById(id).map(teacher -> ResponseEntity.ok().body(teacherMapper.mapToTeacherDto(teacherService.partialUpdateTeacherWithId(id, teacherMapper.mapToTeacher(toUpdate))))).orElseGet(() -> ResponseEntity.notFound().build());
+    return teacherService
+        .findTeacherById(id)
+        .map(
+            teacher ->
+                ResponseEntity.ok()
+                    .body(
+                        teacherMapper.mapToTeacherDto(
+                            teacherService.partialUpdateTeacherWithId(
+                                id, teacherMapper.mapToTeacher(toUpdate)))))
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("teachers/{id}")
   public ResponseEntity<Object> deleteTeacher(@PathVariable int id) {
-    return teacherService.findTeacherById(id).map(teacher -> {
-      teacherService.deleteTeacherWithId(teacher.getId());
-      return ResponseEntity.noContent().build();
-    }).orElseGet(() -> ResponseEntity.notFound().build());
+    return teacherService
+        .findTeacherById(id)
+        .map(
+            teacher -> {
+              teacherService.deleteTeacherWithId(teacher.getId());
+              return ResponseEntity.noContent().build();
+            })
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

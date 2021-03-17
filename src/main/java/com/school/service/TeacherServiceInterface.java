@@ -7,15 +7,15 @@ import java.util.Optional;
 
 interface TeacherServiceInterface {
 
-    void saveTeacher(Teacher teacher);
+  void saveTeacher(Teacher teacher);
 
-    List<Teacher> findAllTeachers();
+  List<Teacher> findAllTeachers();
 
-    Optional<Teacher> findTeacherById(Integer id);
+  Optional<Teacher> findTeacherById(Integer id);
 
-    Teacher updateTeacherWithId(Teacher teacher, int id);
+  Teacher updateTeacherWithId(Teacher teacher, int id);
 
-    void deleteTeacherWithId(int id);
+  void deleteTeacherWithId(int id);
 
-    Teacher partialUpdateTeacherWithId(int id, Teacher teacher);
+  Teacher partialUpdateTeacherWithId(int id, Teacher teacher);
 }

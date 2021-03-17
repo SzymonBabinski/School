@@ -9,43 +9,46 @@ import java.util.Optional;
 
 @Service
 public class TeacherService implements TeacherServiceInterface {
-    private TeacherRepository teacherRepository;
+  private TeacherRepository teacherRepository;
 
-    public TeacherService(TeacherRepository teacherRepository) {
-        this.teacherRepository = teacherRepository;
-    }
+  public TeacherService(TeacherRepository teacherRepository) {
+    this.teacherRepository = teacherRepository;
+  }
 
-    public void saveTeacher(Teacher teacher) {
-        teacherRepository.save(teacher);
-    }
+  public void saveTeacher(Teacher teacher) {
+    teacherRepository.save(teacher);
+  }
 
-    public List<Teacher> findAllTeachers() {
-        return teacherRepository.findAll();
-    }
+  public List<Teacher> findAllTeachers() {
+    return teacherRepository.findAll();
+  }
 
-    public Optional<Teacher> findTeacherById(Integer id) {
-        return teacherRepository.findById(id);
-    }
+  public Optional<Teacher> findTeacherById(Integer id) {
+    return teacherRepository.findById(id);
+  }
 
-    public Teacher updateTeacherWithId(Teacher teacher, int id) {
-        teacher.setId(id);
-        return teacherRepository.save(teacher);
-    }
+  public Teacher updateTeacherWithId(Teacher teacher, int id) {
+    teacher.setId(id);
+    return teacherRepository.save(teacher);
+  }
 
-    public void deleteTeacherWithId(int id) {
-        teacherRepository.deleteById(id);
-    }
+  public void deleteTeacherWithId(int id) {
+    teacherRepository.deleteById(id);
+  }
 
-    public Teacher partialUpdateTeacherWithId(int id, Teacher teacher) {
+  public Teacher partialUpdateTeacherWithId(int id, Teacher teacher) {
 
-        return findTeacherById(id).map(teacher1 -> {
-            if (teacher.getFirstName() != null) {
+    return findTeacherById(id)
+        .map(
+            teacher1 -> {
+              if (teacher.getFirstName() != null) {
                 teacher1.setFirstName(teacher.getFirstName());
-            }
-            if (teacher.getLastName() != null) {
+              }
+              if (teacher.getLastName() != null) {
                 teacher1.setLastName(teacher.getLastName());
-            }
-            return teacherRepository.save(teacher1);
-        }).orElseThrow(() -> new NullPointerException("Teacher not found"));
-    }
+              }
+              return teacherRepository.save(teacher1);
+            })
+        .orElseThrow(() -> new NullPointerException("Teacher not found"));
+  }
 }

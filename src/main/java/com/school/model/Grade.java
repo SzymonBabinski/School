@@ -5,56 +5,55 @@ import javax.persistence.*;
 @Entity
 @Table(name = "grades")
 public class Grade {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int value;
-    private String subject;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_id")
-    private Student student;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    public Grade() {
-    }
+  private int value;
 
-    public Grade(int value, String subject, Student student) {
-        this.value = value;
-        this.subject = subject;
-        this.student = student;
-    }
+  private String subject;
 
-    public int getId() {
-        return id;
-    }
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "student_id")
+  private Student student;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public Grade() {}
 
-    public int getValue() {
-        return value;
-    }
+  public Grade(int value, String subject, Student student) {
+    this.value = value;
+    this.subject = subject;
+    this.student = student;
+  }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public String getSubject() {
-        return subject;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+  public int getValue() {
+    return value;
+  }
 
+  public void setValue(int value) {
+    this.value = value;
+  }
 
-    public Student getStudent() {
-        return student;
-    }
+  public String getSubject() {
+    return subject;
+  }
 
-    public void setStudent(Student student) {
-        this.student = student;
-    }
+  public void setSubject(String subject) {
+    this.subject = subject;
+  }
 
+  public Student getStudent() {
+    return student;
+  }
 
+  public void setStudent(Student student) {
+    this.student = student;
+  }
 }

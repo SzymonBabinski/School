@@ -23,37 +23,70 @@ public class StudentController {
 
   @PostMapping("/students")
   public ResponseEntity<Object> createStudent(@RequestBody StudentDto toCreate) {
-    return studentService.findStudentById(toCreate.getId()).map(student -> ResponseEntity.notFound().build()).orElse(ResponseEntity.created(URI.create("/" + toCreate.getId())).body(studentMapper.mapToStudentDto(studentService.saveStudent(studentMapper.mapToStudent(toCreate)))));
+    return studentService
+        .findStudentById(toCreate.getId())
+        .map(student -> ResponseEntity.notFound().build())
+        .orElse(
+            ResponseEntity.created(URI.create("/" + toCreate.getId()))
+                .body(
+                    studentMapper.mapToStudentDto(
+                        studentService.saveStudent(studentMapper.mapToStudent(toCreate)))));
   }
 
   @GetMapping("/students")
   public ResponseEntity<List<StudentDto>> getStudents() {
-    return ResponseEntity.ok().body(studentMapper.mapToStudentListDto(studentService.findAllStudents()));
+    return ResponseEntity.ok()
+        .body(studentMapper.mapToStudentListDto(studentService.findAllStudents()));
   }
 
   @GetMapping("/students/{id}")
   public ResponseEntity<StudentDto> studentInfo(@PathVariable int id) {
-    return studentService.findStudentById(id).map(student -> ResponseEntity.ok(studentMapper.mapToStudentDto(student))).orElse(ResponseEntity.notFound().build());
+    return studentService
+        .findStudentById(id)
+        .map(student -> ResponseEntity.ok(studentMapper.mapToStudentDto(student)))
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping("/students/{id}")
-  public ResponseEntity<StudentDto> updateStudent(@RequestBody StudentDto toUpdate, @PathVariable int id) {
+  public ResponseEntity<StudentDto> updateStudent(
+      @RequestBody StudentDto toUpdate, @PathVariable int id) {
 
-    return studentService.findStudentById(id).map(student -> ResponseEntity.ok(studentMapper.mapToStudentDto(studentService.updateStudentWithId(studentMapper.mapToStudent(toUpdate), id)))).orElse(ResponseEntity.notFound().build());
+    return studentService
+        .findStudentById(id)
+        .map(
+            student ->
+                ResponseEntity.ok(
+                    studentMapper.mapToStudentDto(
+                        studentService.updateStudentWithId(
+                            studentMapper.mapToStudent(toUpdate), id))))
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @PatchMapping("/students/{id}")
-  public ResponseEntity<StudentDto> partialUpdateStudent(@RequestBody StudentDto toUpdate, @PathVariable int id) {
+  public ResponseEntity<StudentDto> partialUpdateStudent(
+      @RequestBody StudentDto toUpdate, @PathVariable int id) {
 
-    return studentService.findStudentById(id).map(student -> ResponseEntity.ok(studentMapper.mapToStudentDto(studentService.partialUpdateStudentWithId(id, studentMapper.mapToStudent(toUpdate))))).orElse(ResponseEntity.notFound().build());
+    return studentService
+        .findStudentById(id)
+        .map(
+            student ->
+                ResponseEntity.ok(
+                    studentMapper.mapToStudentDto(
+                        studentService.partialUpdateStudentWithId(
+                            id, studentMapper.mapToStudent(toUpdate)))))
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("students/{id}")
   public ResponseEntity<Object> deleteStudent(@PathVariable int id) {
 
-    return studentService.findStudentById(id).map(student -> {
-      studentService.deleteStudentWithId(id);
-      return ResponseEntity.noContent().build();
-    }).orElse(ResponseEntity.notFound().build());
+    return studentService
+        .findStudentById(id)
+        .map(
+            student -> {
+              studentService.deleteStudentWithId(id);
+              return ResponseEntity.noContent().build();
+            })
+        .orElse(ResponseEntity.notFound().build());
   }
 }

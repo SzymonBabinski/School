@@ -5,58 +5,60 @@ import javax.persistence.*;
 @Entity
 @Table(name = "lessons")
 public class Lesson {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @OneToOne
-    @JoinColumn(name = "class_name")
-    private Class relatedClass;
-    @OneToOne
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
-    private String subject;
-    private String day;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    public Lesson() {
-    }
+  @OneToOne
+  @JoinColumn(name = "class_name")
+  private Class relatedClass;
 
-    public int getId() {
-        return id;
-    }
+  @OneToOne
+  @JoinColumn(name = "teacher_id")
+  private Teacher teacher;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  private String subject;
+  private String day;
 
-    public Class getRelatedClass() {
-        return relatedClass;
-    }
+  public Lesson() {}
 
-    public void setRelatedClass(Class relatedClass) {
-        this.relatedClass = relatedClass;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public Teacher getTeacher() {
-        return teacher;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
+  public Class getRelatedClass() {
+    return relatedClass;
+  }
 
-    public String getSubject() {
-        return subject;
-    }
+  public void setRelatedClass(Class relatedClass) {
+    this.relatedClass = relatedClass;
+  }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+  public Teacher getTeacher() {
+    return teacher;
+  }
 
-    public String getDay() {
-        return day;
-    }
+  public void setTeacher(Teacher teacher) {
+    this.teacher = teacher;
+  }
 
-    public void setDay(String day) {
-        this.day = day;
-    }
+  public String getSubject() {
+    return subject;
+  }
+
+  public void setSubject(String subject) {
+    this.subject = subject;
+  }
+
+  public String getDay() {
+    return day;
+  }
+
+  public void setDay(String day) {
+    this.day = day;
+  }
 }

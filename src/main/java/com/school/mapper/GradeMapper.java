@@ -11,15 +11,16 @@ import java.util.stream.Collectors;
 @Component
 public class GradeMapper {
 
-    public Grade mapToGrade(final GradeDto gradeDto, Student student) {
-        return new Grade(gradeDto.getValue(), gradeDto.getSubject(), student);
-    }
+  public Grade mapToGrade(final GradeDto gradeDto, Student student) {
+    return new Grade(gradeDto.getValue(), gradeDto.getSubject(), student);
+  }
 
-    public GradeDto mapToGradeDto(final Grade grade) {
-        return new GradeDto(grade.getId(), grade.getValue(), grade.getSubject(), grade.getStudent().getId());
-    }
+  public GradeDto mapToGradeDto(final Grade grade) {
+    return new GradeDto(
+        grade.getId(), grade.getValue(), grade.getSubject(), grade.getStudent().getId());
+  }
 
-    public List<GradeDto> mapToGradeDto(final List<Grade> gradeList) {
-        return gradeList.stream().map(this::mapToGradeDto).collect(Collectors.toList());
-    }
+  public List<GradeDto> mapToGradeDto(final List<Grade> gradeList) {
+    return gradeList.stream().map(this::mapToGradeDto).collect(Collectors.toList());
+  }
 }
