@@ -11,31 +11,30 @@ import java.util.List;
 
 @RestController
 public class TeacherController {
+  private TeacherService teacherService;
   private TeacherMapper teacherMapper;
 
-  private TeacherService teacherService;
-
-  public TeacherController(TeacherMapper teacherMapper, TeacherService teacherService) {
-    this.teacherMapper = teacherMapper;
+  public TeacherController(TeacherService teacherService, TeacherMapper teacherMapper) {
     this.teacherService = teacherService;
+    this.teacherMapper = teacherMapper;
   }
 
   @PostMapping("/teachers")
-  public ResponseEntity<TeacherDto> createTeacher(@RequestBody TeacherDto toCreate) {
+  public ResponseEntity<Object> createTeacher(@RequestBody TeacherDto toCreate) {
     return teacherService
-        .findTeacherById(toCreate.getId())
-        .map(teacher -> ResponseEntity.badRequest().body(teacherMapper.mapToTeacherDto(teacher)))
-        .orElseGet(
-            () -> {
-              teacherService.saveTeacher(teacherMapper.mapToTeacher(toCreate));
-              return ResponseEntity.created(URI.create("/" + toCreate.getId())).body(toCreate);
-            });
+            .findTeacherById(toCreate.getId())
+            .map(teacher -> ResponseEntity.badRequest().build())
+            .orElseGet(
+                    () -> {
+                      TeacherDto savedTeacher = teacherService.saveTeacher(toCreate);
+                      return ResponseEntity.created(URI.create("/" + savedTeacher.getId()))
+                              .body(savedTeacher);
+                    });
   }
 
   @GetMapping("/teachers")
   public ResponseEntity<List<TeacherDto>> getTeachers() {
-    return ResponseEntity.ok()
-        .body(teacherMapper.mapToTeacherListDto(teacherService.findAllTeachers()));
+    return ResponseEntity.ok().body(teacherService.findAllTeachers());
   }
 
   @GetMapping("/teachers/{id}")
@@ -52,14 +51,8 @@ public class TeacherController {
       @RequestBody TeacherDto toUpdate, @PathVariable int id) {
 
     return teacherService
-        .findTeacherById(id)
-        .map(
-            teacher ->
-                ResponseEntity.ok()
-                    .body(
-                        teacherMapper.mapToTeacherDto(
-                            teacherService.updateTeacherWithId(
-                                teacherMapper.mapToTeacher(toUpdate), id))))
+            .findTeacherById(id)
+            .map(teacher -> ResponseEntity.ok().body(teacherService.updateTeacherWithId(teacher, toUpdate)))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
@@ -70,12 +63,8 @@ public class TeacherController {
     return teacherService
         .findTeacherById(id)
         .map(
-            teacher ->
-                ResponseEntity.ok()
-                    .body(
-                        teacherMapper.mapToTeacherDto(
-                            teacherService.partialUpdateTeacherWithId(
-                                id, teacherMapper.mapToTeacher(toUpdate)))))
+                teacher ->
+                        ResponseEntity.ok().body(teacherService.partialUpdateTeacherWithId(teacher, toUpdate)))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 

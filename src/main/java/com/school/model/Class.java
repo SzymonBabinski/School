@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 @Table(name = "classes")
 public class Class {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private String className;
 
   @OneToOne(targetEntity = Teacher.class)
@@ -20,9 +19,10 @@ public class Class {
 
   public Class() {}
 
-  public Class(String className, Teacher classTeacher) {
+  public Class(String className, Teacher classTeacher, List<Student> students) {
     this.className = className;
     this.classTeacher = classTeacher;
+    this.students = students;
   }
 
   public String getClassName() {
@@ -50,6 +50,6 @@ public class Class {
   }
 
   public List<Integer> getStudentsId() {
-    return students.stream().map(student -> student.getId()).collect(Collectors.toList());
+    return students.stream().map(Student::getId).collect(Collectors.toList());
   }
 }
