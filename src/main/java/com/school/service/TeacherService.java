@@ -1,54 +1,22 @@
 package com.school.service;
 
+import com.school.dto.TeacherDto;
 import com.school.model.Teacher;
-import com.school.repository.TeacherRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class TeacherService implements TeacherServiceInterface {
-  private TeacherRepository teacherRepository;
+public interface TeacherService {
 
-  public TeacherService(TeacherRepository teacherRepository) {
-    this.teacherRepository = teacherRepository;
-  }
+  TeacherDto saveTeacher(TeacherDto teacherDto);
 
-  public void saveTeacher(Teacher teacher) {
-    teacherRepository.save(teacher);
-  }
+  List<TeacherDto> findAllTeachers();
 
-  public List<Teacher> findAllTeachers() {
-    return teacherRepository.findAll();
-  }
+  Optional<Teacher> findTeacherById(Integer id);
 
-  public Optional<Teacher> findTeacherById(Integer id) {
-    return teacherRepository.findById(id);
-  }
+  TeacherDto updateTeacherWithId(Teacher currentTeacher, TeacherDto teacherDto);
 
-  public Teacher updateTeacherWithId(Teacher teacher, int id) {
-    teacher.setId(id);
-    return teacherRepository.save(teacher);
-  }
+  void deleteTeacherWithId(int id);
 
-  public void deleteTeacherWithId(int id) {
-    teacherRepository.deleteById(id);
-  }
-
-  public Teacher partialUpdateTeacherWithId(int id, Teacher teacher) {
-
-    return findTeacherById(id)
-        .map(
-            teacher1 -> {
-              if (teacher.getFirstName() != null) {
-                teacher1.setFirstName(teacher.getFirstName());
-              }
-              if (teacher.getLastName() != null) {
-                teacher1.setLastName(teacher.getLastName());
-              }
-              return teacherRepository.save(teacher1);
-            })
-        .orElseThrow(() -> new NullPointerException("Teacher not found"));
-  }
+  TeacherDto partialUpdateTeacherWithId(Teacher currentTeacher, TeacherDto teacherDto);
 }

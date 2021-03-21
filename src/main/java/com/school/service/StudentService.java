@@ -1,56 +1,23 @@
 package com.school.service;
 
+import com.school.dto.StudentDto;
 import com.school.model.Student;
-import com.school.repository.StudentRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class StudentService implements StudentServiceInterface {
+public interface StudentService {
+  StudentDto saveStudent(StudentDto studentDto);
 
-  public StudentService(StudentRepository studentRepository) {
-    this.studentRepository = studentRepository;
-  }
+  List<StudentDto> findAllStudents();
 
-  private StudentRepository studentRepository;
+  Optional<Student> findStudentById(Integer id);
 
-  public Student saveStudent(Student student) {
-    return studentRepository.save(student);
-  }
+  StudentDto updateStudentWithId(Student currentStudent, StudentDto studentDto);
 
-  public List<Student> findAllStudents() {
-    return studentRepository.findAll();
-  }
+  void deleteStudentWithId(int id);
 
-  public Optional<Student> findStudentById(Integer id) {
-    return studentRepository.findById(id);
-  }
+  StudentDto partialUpdateStudentWithId(Student currentStudent, StudentDto studentDto);
 
-  public Student updateStudentWithId(Student student, int id) {
-    student.setId(id);
-    return studentRepository.save(student);
-  }
-
-  public void deleteStudentWithId(int id) {
-    studentRepository.deleteById(id);
-  }
-
-  public Student partialUpdateStudentWithId(int id, Student student) {
-
-    return findStudentById(id)
-        .map(
-            currentStudent -> {
-              if (student.getFirstName() != null) {
-                currentStudent.setFirstName(student.getFirstName());
-              }
-              if (student.getLastName() != null) {
-                currentStudent.setLastName(student.getLastName());
-              }
-              studentRepository.save(currentStudent);
-              return currentStudent;
-            })
-        .orElseThrow(() -> new NullPointerException("Student not found"));
-  }
+  List<StudentDto> findAllStudentsByClassName(String className);
 }
