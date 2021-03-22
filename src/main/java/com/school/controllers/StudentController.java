@@ -21,14 +21,8 @@ public class StudentController {
 
     @PostMapping("/students")
     public ResponseEntity<Object> createStudent(@RequestBody StudentDto toCreate) {
-        return studentService
-                .findStudentById(toCreate.getId())
-                .map(student -> ResponseEntity.badRequest().build())
-                .orElseGet(
-                        () -> {
-                            StudentDto studentDto = studentService.saveStudent(toCreate);
-                            return ResponseEntity.created(URI.create("/" + studentDto.getId())).body(studentDto);
-                        });
+        StudentDto studentDto = studentService.saveStudent(toCreate);
+        return ResponseEntity.created(URI.create("/" + studentDto.getId())).body(studentDto);
     }
 
     @GetMapping("/students")
@@ -74,7 +68,7 @@ public class StudentController {
                 .map(
                         student -> {
                             studentService.deleteStudentWithId(id);
-                            return ResponseEntity.noContent().build();
+                            return ResponseEntity.ok().build();
                         })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

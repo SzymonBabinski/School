@@ -3,6 +3,7 @@ package com.school.controllers;
 import com.school.dto.GradeDto;
 import com.school.service.GradeService;
 import com.school.service.StudentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class GradeController {
                 .findStudentById(id)
                 .map(student -> gradeService.addGradeToStudent(student, gradeDto))
                 .map(savedGradeDto -> ResponseEntity.ok().body(savedGradeDto))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @GetMapping("/students/{studentId}/grades")
@@ -75,7 +76,7 @@ public class GradeController {
         if (studentService.findStudentById(studentId).isPresent()
                 && gradeService.findGrade(gradeId).isPresent()) {
             gradeService.deleteStudentGrade(studentId, gradeId);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
         }

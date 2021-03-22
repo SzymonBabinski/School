@@ -21,15 +21,9 @@ public class TeacherController {
 
     @PostMapping("/teachers")
     public ResponseEntity<Object> createTeacher(@RequestBody TeacherDto toCreate) {
-        return teacherService
-                .findTeacherById(toCreate.getId())
-                .map(teacher -> ResponseEntity.badRequest().build())
-                .orElseGet(
-                        () -> {
-                            TeacherDto savedTeacher = teacherService.saveTeacher(toCreate);
-                            return ResponseEntity.created(URI.create("/" + savedTeacher.getId()))
-                                    .body(savedTeacher);
-                        });
+        TeacherDto savedTeacher = teacherService.saveTeacher(toCreate);
+        return ResponseEntity.created(URI.create("/" + savedTeacher.getId()))
+                .body(savedTeacher);
     }
 
     @GetMapping("/teachers")
@@ -76,7 +70,7 @@ public class TeacherController {
                 .map(
                         teacher -> {
                             teacherService.deleteTeacherWithId(teacher.getId());
-                            return ResponseEntity.noContent().build();
+                            return ResponseEntity.ok().build();
                         })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

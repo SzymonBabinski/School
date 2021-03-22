@@ -26,10 +26,10 @@ public class StudentServiceImpl implements StudentService {
             studentRepository.save(studentMapper.mapToStudent(studentDto)));
   }
 
-  public List<StudentDto> findAllStudentsByClassName(String className) {
-    return studentMapper.mapToStudentListDto(
-            studentRepository.getStudentsByRelatedClassClassName(className));
+  public List<Student> findAllStudentsByClassName(String className) {
+    return studentRepository.getStudentsByRelatedClassClassName(className);
   }
+
 
   public List<StudentDto> findAllStudents() {
     return studentMapper.mapToStudentListDto(studentRepository.findAll());
@@ -63,5 +63,9 @@ public class StudentServiceImpl implements StudentService {
       currentStudent.getRelatedClass().setClassName(studentDto.getClassName());
     }
     return studentMapper.mapToStudentDto(currentStudent);
+  }
+
+  public Optional<Student> getStudentByIdAndClassName(int studentId, String className) {
+    return studentRepository.getStudentByIdAndRelatedClassClassName(studentId, className);
   }
 }

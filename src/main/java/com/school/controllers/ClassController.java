@@ -35,7 +35,8 @@ public class ClassController {
     public ResponseEntity<ClassDto> getClassInfo(@PathVariable("className") String className) {
         return classService.getClassByClassName(className)
                 .map(classMapper::mapToClassDto)
-                .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/classes/{className}/students")
@@ -56,12 +57,8 @@ public class ClassController {
 
     @PostMapping("/classes")
     public ResponseEntity<Object> createClass(@RequestBody ClassDto classDto) {
-        return classService.getClassByClassName(classDto.getClassName())
-                .map(classDto1 -> ResponseEntity.badRequest().build())
-                .orElseGet(() -> {
-                    ClassDto classDto1 = classService.saveClass(classDto);
-                    return ResponseEntity.created(URI.create("/" + classDto.getClassName())).body(classDto1);
-                });
+        ClassDto createdClass = classService.saveClass(classDto);
+        return ResponseEntity.created(URI.create("/" + createdClass.getClassName())).body(createdClass);
     }
 
     @PutMapping("/classes/{className}")

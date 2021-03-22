@@ -19,5 +19,7 @@ public interface StudentService {
 
   StudentDto partialUpdateStudentWithId(Student currentStudent, StudentDto studentDto);
 
-  List<StudentDto> findAllStudentsByClassName(String className);
+  List<Student> findAllStudentsByClassName(String className);
+
+  Optional<Student> getStudentByIdAndClassName(int studentId, String className);
 }

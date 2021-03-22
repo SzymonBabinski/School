@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Service
 public class GradeServiceImpl implements GradeService {
-  private GradeRepository gradeRepository;
-  private GradeMapper gradeMapper;
+  private final GradeRepository gradeRepository;
+  private final GradeMapper gradeMapper;
 
   public GradeServiceImpl(GradeRepository gradeRepository, GradeMapper gradeMapper) {
     this.gradeRepository = gradeRepository;
