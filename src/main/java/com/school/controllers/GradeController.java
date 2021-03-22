@@ -1,6 +1,7 @@
 package com.school.controllers;
 
 import com.school.dto.GradeDto;
+import com.school.mapper.GradeMapper;
 import com.school.service.GradeService;
 import com.school.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -13,10 +14,12 @@ import java.util.List;
 public class GradeController {
     private final StudentService studentService;
     private final GradeService gradeService;
+    private final GradeMapper gradeMapper;
 
-    public GradeController(StudentService studentService, GradeService gradeService) {
+    GradeController(final StudentService studentService, final GradeService gradeService, final GradeMapper gradeMapper) {
         this.studentService = studentService;
         this.gradeService = gradeService;
+        this.gradeMapper = gradeMapper;
     }
 
     @PostMapping("/students/{studentId}/grades")
@@ -44,14 +47,10 @@ public class GradeController {
     public ResponseEntity<GradeDto> gradeInfo(
             @PathVariable("studentId") int studentId, @PathVariable("gradeId") int gradeId) {
 
-        if (studentService.findStudentById(studentId).isPresent()
-                && gradeService.findGrade(gradeId).isPresent()) {
-
-            return ResponseEntity.ok().body(gradeService.showInfoAboutStudentGrade(studentId, gradeId));
-
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return gradeService.getStudentGrade(studentId, gradeId)
+                .map(gradeMapper::mapToGradeDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/students/{studentId}/grades/{gradeId}")
@@ -60,25 +59,21 @@ public class GradeController {
             @PathVariable("studentId") int studentId,
             @PathVariable("gradeId") int gradeId) {
 
-        if (studentService.findStudentById(studentId).isPresent()
-                && gradeService.findGrade(gradeId).isPresent()) {
-            return ResponseEntity.ok()
-                    .body(gradeService.updateStudentGrade(studentId, gradeId, gradeDto));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return gradeService.getStudentGrade(studentId, gradeId)
+                .map(currentGrade -> gradeService.updateStudentGrade(currentGrade, gradeDto))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/students/{studentId}/grades/{gradeId}")
-    public ResponseEntity<GradeDto> deleteGrade(
+    public ResponseEntity<Object> deleteGrade(
             @PathVariable("studentId") int studentId, @PathVariable("gradeId") int gradeId) {
 
-        if (studentService.findStudentById(studentId).isPresent()
-                && gradeService.findGrade(gradeId).isPresent()) {
-            gradeService.deleteStudentGrade(studentId, gradeId);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return gradeService.getStudentGrade(studentId, gradeId)
+                .map(currentGrade -> {
+                    gradeService.deleteStudentGrade(studentId, gradeId);
+                    return ResponseEntity.ok().build();
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

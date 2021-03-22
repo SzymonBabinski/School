@@ -10,13 +10,13 @@ import java.util.Optional;
 public interface GradeService {
   Optional<Grade> findGrade(int id);
 
-  GradeDto showInfoAboutStudentGrade(int studentId, int gradeId);
+  Optional<Grade> getStudentGrade(int studentId, int gradeId);
 
   List<GradeDto> getStudentGrades(int studentId);
 
-  GradeDto updateStudentGrade(int studentId, int gradeId, GradeDto gradeDto);
+  GradeDto updateStudentGrade(Grade currentGrade, GradeDto gradeDto);
 
-  void deleteStudentGrade(int studentId, int gradeId);
+  void deleteStudentGrade(int gradeId, int studentId);
 
   GradeDto addGradeToStudent(Student student, GradeDto gradeDto);
 }

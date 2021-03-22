@@ -24,8 +24,8 @@ public class GradeServiceImpl implements GradeService {
     return gradeRepository.findById(id);
   }
 
-  public GradeDto showInfoAboutStudentGrade(int studentId, int gradeId) {
-    return gradeMapper.mapToGradeDto(gradeRepository.getGradeByStudentIdAndId(studentId, gradeId));
+  public Optional<Grade> getStudentGrade(int studentId, int gradeId) {
+    return gradeRepository.getGradeByStudentIdAndId(studentId, gradeId);
   }
 
   public List<GradeDto> getStudentGrades(int studentId) {
@@ -33,14 +33,13 @@ public class GradeServiceImpl implements GradeService {
   }
 
 
-  public GradeDto updateStudentGrade(int studentId, int gradeId, GradeDto gradeDto) {
-    Grade currentGrade = gradeRepository.getGradeByStudentIdAndId(studentId, gradeId);
+  public GradeDto updateStudentGrade(Grade currentGrade, GradeDto gradeDto) {
     currentGrade.setValue(gradeDto.getValue());
     currentGrade.setSubject(gradeDto.getSubject());
     return gradeMapper.mapToGradeDto(gradeRepository.save(currentGrade));
   }
 
-  public void deleteStudentGrade(int studentId, int gradeId) {
+  public void deleteStudentGrade(int gradeId, int studentId) {
     gradeRepository.deleteGradeByIdAndStudentId(gradeId, studentId);
   }
 
