@@ -3,6 +3,8 @@ package com.school.controllers;
 import com.school.dto.StudentDto;
 import com.school.mapper.StudentMapper;
 import com.school.service.StudentService;
+import javassist.NotFoundException;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,7 @@ import java.util.List;
 
 @RestController
 public class StudentController {
+    @Lazy
     private final StudentService studentService;
     private final StudentMapper studentMapper;
 
@@ -20,7 +23,7 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    public ResponseEntity<Object> createStudent(@RequestBody StudentDto toCreate) {
+    public ResponseEntity<Object> createStudent(@RequestBody StudentDto toCreate) throws NotFoundException {
         StudentDto studentDto = studentService.saveStudent(toCreate);
         return ResponseEntity.created(URI.create("/" + studentDto.getId())).body(studentDto);
     }
@@ -39,24 +42,38 @@ public class StudentController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // TODO: Handle exception in different way and refactor
     @PutMapping("/students/{id}")
-    public ResponseEntity<StudentDto> updateStudent(
-            @RequestBody StudentDto toUpdate, @PathVariable int id) {
+    public ResponseEntity<?> updateStudent(
+            @RequestBody StudentDto toUpdate, @PathVariable int id) throws NotFoundException {
         return studentService
                 .findStudentById(id)
-                .map(student -> studentService.updateStudentWithId(student, toUpdate))
-                .map(ResponseEntity::ok)
+                .map(student -> {
+                    try {
+                        return ResponseEntity.ok(studentService.updateStudentWithId(student, toUpdate));
+                    } catch (NotFoundException e) {
+                        e.printStackTrace();
+                        return ResponseEntity.notFound().build();
+                    }
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // TODO: Handle exception in different way and refactor
     @PatchMapping("/students/{id}")
-    public ResponseEntity<StudentDto> partialUpdateStudent(
+    public ResponseEntity<?> partialUpdateStudent(
             @RequestBody StudentDto toUpdate, @PathVariable int id) {
 
         return studentService
                 .findStudentById(id)
-                .map(student -> studentService.partialUpdateStudentWithId(student, toUpdate))
-                .map(ResponseEntity::ok)
+                .map(student -> {
+                    try {
+                        return ResponseEntity.ok(studentService.partialUpdateStudentWithId(student, toUpdate));
+                    } catch (NotFoundException e) {
+                        e.printStackTrace();
+                        return ResponseEntity.notFound().build();
+                    }
+                })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

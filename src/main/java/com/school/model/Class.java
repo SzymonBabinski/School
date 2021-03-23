@@ -14,7 +14,7 @@ public class Class {
   @JoinColumn(name = "teacher_id")
   private Teacher classTeacher;
 
-  @OneToMany(mappedBy = "relatedClass")
+  @OneToMany(mappedBy = "relatedClass", cascade = CascadeType.ALL)
   private List<Student> students;
 
   public Class() {}

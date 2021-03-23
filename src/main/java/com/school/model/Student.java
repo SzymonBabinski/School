@@ -16,10 +16,10 @@ public class Student {
   private String lastName;
 
   @OneToMany(targetEntity = Grade.class, cascade = CascadeType.ALL)
-  @JoinColumn(name = "student_id")
+  @JoinColumn(name = "student_id", insertable = false, updatable = false)
   private List<Grade> grades = new ArrayList<>();
 
-  @ManyToOne(targetEntity = Class.class)
+  @ManyToOne(targetEntity = Class.class, cascade = CascadeType.ALL)
   @JoinColumn(name = "student_class_name")
   private Class relatedClass;
 
@@ -32,9 +32,10 @@ public class Student {
     this.relatedClass = relatedClass;
   }
 
-  public Student(String firstName, String lastName) {
+  public Student(final String firstName, final String lastName, final Class relatedClass) {
     this.firstName = firstName;
     this.lastName = lastName;
+    this.relatedClass = relatedClass;
   }
 
   public int getId() {

@@ -14,11 +14,11 @@ import java.util.Optional;
 
 @Service
 public class ClassServiceImpl implements ClassService {
-    private ClassRepository classRepository;
-    private TeacherService teacherService;
+    private final ClassRepository classRepository;
+    private final TeacherService teacherService;
 
-    private ClassMapper classMapper;
-    private StudentService studentService;
+    private final ClassMapper classMapper;
+    private final StudentService studentService;
 
     ClassServiceImpl(final ClassRepository classRepository, final TeacherService teacherService, final ClassMapper classMapper, final StudentService studentService) {
         this.classRepository = classRepository;
