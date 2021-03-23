@@ -31,15 +31,4 @@ CREATE TABLE grades
     FOREIGN KEY (student_id) REFERENCES students (id)
 );
 
-CREATE TABLE lessons
-(
-    id         INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    subject    VARCHAR(30),
-    day        VARCHAR(50),
-    class_name VARCHAR(50),
-    FOREIGN KEY (class_name) REFERENCES classes (class_name),
-    teacher_id INT NOT NULL,
-    FOREIGN KEY (teacher_id) REFERENCES teachers (id)
-);
-
 
